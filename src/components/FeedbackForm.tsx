@@ -3,14 +3,17 @@ import { MAX_CHARS_LENGTH } from '../lib/constants';
 
 const FeedbackForm = () => {
   const [textarea, setTextarea] = useState<string>('');
+  const charCount = MAX_CHARS_LENGTH - textarea.length;
 
   const handleTextareaChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>,
   ) => {
-    setTextarea(event.target.value);
-  };
+    const newTextarea = event.target.value;
 
-  const charCount = MAX_CHARS_LENGTH - textarea.length;
+    if (newTextarea.length <= MAX_CHARS_LENGTH) {
+      setTextarea(newTextarea);
+    }
+  };
 
   return (
     <form className='form'>
