@@ -1,7 +1,13 @@
+import Footer from './components/Footer';
+import Container from './components/Container';
+import HashTagList from './components/HashTagList';
+
 function App() {
   return (
-    <div>
-      <h1>Corp Comment App</h1>
+    <div className='app'>
+      <Footer />
+      <Container />
+      <HashTagList />
     </div>
   );
 }
