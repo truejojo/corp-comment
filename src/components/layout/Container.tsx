@@ -1,6 +1,6 @@
 import Header from './Header';
-import FeedbackList from './FeedbackList';
-import type { FeedbackItemProps } from '../types';
+import FeedbackList from '../feedback/FeedbackList';
+import type { FeedbackItemProps } from '../../types';
 
 type ContainerProps = {
   isLoading: boolean;

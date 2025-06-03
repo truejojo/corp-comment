@@ -1,7 +1,7 @@
 import FeedbackItem from './FeedbackItem';
-import Spinner from './Spinner';
-import ErrorMessage from './ErrorMessage';
-import type { FeedbackItemProps } from '../types';
+import Spinner from '../Spinner';
+import ErrorMessage from '../ErrorMessage';
+import type { FeedbackItemProps } from '../../types';
 
 type FeedbackListProps = {
   isLoading: boolean;
