@@ -1,13 +1,30 @@
 import Header from './Header';
 import FeedbackList from './FeedbackList';
+import type { FeedbackItemProps } from '../types';
 
-const MainContent = () => {
+type ContainerProps = {
+  isLoading: boolean;
+  error: string;
+  feedbackItems: FeedbackItemProps[] | [];
+  addFeedbackItemToList: (text: string) => void;
+};
+
+const Container = ({
+  isLoading,
+  error,
+  feedbackItems,
+  addFeedbackItemToList,
+}: ContainerProps) => {
   return (
     <main className='container'>
-      <Header />
-      <FeedbackList />
+      <Header addFeedbackItemToList={addFeedbackItemToList} />
+      <FeedbackList
+        isLoading={isLoading}
+        error={error}
+        feedbackItems={feedbackItems}
+      />
     </main>
   );
 };
 
-export default MainContent;
+export default Container;

@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { MAX_CHARS_LENGTH } from '../lib/constants';
 
-const FeedbackForm = () => {
+type FeedbackFormProps = {
+  addFeedbackItemToList: (text: string) => void;
+};
+
+const FeedbackForm = ({ addFeedbackItemToList }: FeedbackFormProps) => {
   const [textarea, setTextarea] = useState<string>('');
   const charCount = MAX_CHARS_LENGTH - textarea.length;
 
@@ -15,8 +19,19 @@ const FeedbackForm = () => {
     }
   };
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (textarea.trim() === '') {
+      return;
+    }
+
+    addFeedbackItemToList(textarea);
+    setTextarea('');
+  };
+
   return (
-    <form className='form'>
+    <form onSubmit={handleSubmit} className='form'>
       <textarea
         id='feedback-textarea'
         value={textarea}
@@ -29,7 +44,7 @@ const FeedbackForm = () => {
       </label>
       <div>
         <p className='u-italic'>{charCount}</p>
-        <button type='button'>
+        <button type='submit'>
           <span>Submit</span>
         </button>
       </div>

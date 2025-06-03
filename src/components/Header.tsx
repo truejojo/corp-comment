@@ -3,13 +3,17 @@ import Logo from './Logo';
 import PageHeading from './PageHeading';
 import FeedbackForm from './FeedbackForm';
 
-const Header = () => {
+type HeaderProps = {
+  addFeedbackItemToList: (text: string) => void;
+};
+
+const Header = ({ addFeedbackItemToList }: HeaderProps) => {
   return (
     <header>
       <Pattern />
       <Logo />
       <PageHeading />
-      <FeedbackForm />
+      <FeedbackForm addFeedbackItemToList={addFeedbackItemToList} />
     </header>
   );
 };
