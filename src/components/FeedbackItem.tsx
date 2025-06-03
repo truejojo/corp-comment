@@ -6,16 +6,16 @@ const FeedbackItem = ({ item }: { item: FeedbackItemProps }) => {
     <li className='feedback'>
       <button type='button'>
         <TriangleUpIcon />
-        <span>{item.upvotes}</span>
+        <span>{item.upvoteCount}</span>
       </button>
       <div>
-        <p>{item.bold}</p>
+        <p>{item.badgeLetter}</p>
       </div>
       <div>
-        <p>{item.title}</p>
-        <p>{item.description}</p>
+        <p>{item.company}</p>
+        <p>{item.text}</p>
       </div>
-      <p>{item.days}d</p>
+      <p>{item.daysAgo}d</p>
     </li>
   );
 };

@@ -1,8 +1,8 @@
 export type FeedbackItemProps = {
-  id: string;
-  upvotes: number;
-  bold: string;
-  title: string;
-  description: string;
-  days: number;
+  id: number;
+  upvoteCount: number;
+  badgeLetter: string;
+  company: string;
+  text: string;
+  daysAgo: number;
 };
