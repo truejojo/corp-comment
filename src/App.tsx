@@ -1,7 +1,7 @@
 import Footer from './components/layout/Footer';
 import Container from './components/layout/Container';
-import HashTagList from './components/HashTagList';
-import { useEffect, useState } from 'react';
+import HashTagList from './components/hashtag/HashTagList';
+import { useEffect, useMemo, useState } from 'react';
 import type { FeedbackItemProps } from './types';
 
 function App() {
@@ -10,6 +10,27 @@ function App() {
   );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>('');
+  const [filterItem, setFilterItem] = useState<string>('');
+
+  const filteredFeedbackItems = useMemo(() => {
+    if (!filterItem) {
+      return feedbackItems;
+    }
+
+    return feedbackItems.filter((item) => {
+      return item.company.toUpperCase() === filterItem.toUpperCase();
+    });
+  }, [feedbackItems, filterItem]);
+
+  const companyList = useMemo(() => {
+    const normalizedSet = new Set<string>();
+
+    feedbackItems.forEach((item) => {
+      normalizedSet.add(item.company.toUpperCase());
+    });
+
+    return Array.from(normalizedSet.values());
+  }, [feedbackItems]);
 
   const addFeedbackItemToList = (text: string) => {
     const company = text
@@ -75,10 +96,10 @@ function App() {
       <Container
         isLoading={isLoading}
         error={error}
-        feedbackItems={feedbackItems}
+        feedbackItems={filteredFeedbackItems}
         addFeedbackItemToList={addFeedbackItemToList}
       />
-      <HashTagList />
+      <HashTagList companyList={companyList} setFilterItem={setFilterItem} />
     </div>
   );
 }
