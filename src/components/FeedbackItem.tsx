@@ -15,7 +15,7 @@ const FeedbackItem = ({ item }: { item: FeedbackItemProps }) => {
         <p>{item.company}</p>
         <p>{item.text}</p>
       </div>
-      <p>{item.daysAgo}d</p>
+      <p>{item.daysAgo === 0 ? 'NEW' : `${item.daysAgo}d`}</p>
     </li>
   );
 };

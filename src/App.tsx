@@ -28,7 +28,22 @@ function App() {
       daysAgo: 0,
     };
 
-    setFeedbackItems((prevItems) => [newItem, ...prevItems]);
+    setFeedbackItems((prevItems) => [...prevItems, newItem]);
+
+    const setFeedbackItemsToServer = async () => {
+      await fetch(
+        'https://bytegrad.com/course-assets/projects/corpcomment/api/feedbacks',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newItem),
+        },
+      );
+    };
+
+    setFeedbackItemsToServer();
   };
 
   useEffect(() => {
