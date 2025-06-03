@@ -17,14 +17,17 @@ function App() {
       .find((word) => word.startsWith('#'))!
       .substring(1);
 
+    const badgeLetter = company.charAt(0).toUpperCase();
+
     const newItem: FeedbackItemProps = {
       id: new Date().getTime(),
       upvoteCount: 0,
-      badgeLetter: company.charAt(0).toUpperCase(),
-      company: company,
+      badgeLetter,
+      company,
       text,
       daysAgo: 0,
     };
+
     setFeedbackItems((prevItems) => [newItem, ...prevItems]);
   };
 
