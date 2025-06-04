@@ -5,9 +5,13 @@ type FeedbackFormProps = {
   addFeedbackItemToList: (text: string) => void;
 };
 
+type ValidatedTextarea = 'valid' | 'invalid' | 'default';
+
 const FeedbackForm = ({ addFeedbackItemToList }: FeedbackFormProps) => {
   const [textarea, setTextarea] = useState<string>('');
   const charCount = MAX_CHARS_LENGTH - textarea.length;
+  const [textareaValidation, setTextareaValidation] =
+    useState<ValidatedTextarea>('default');
 
   const handleTextareaChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>,
@@ -25,13 +29,33 @@ const FeedbackForm = ({ addFeedbackItemToList }: FeedbackFormProps) => {
     if (textarea.trim() === '') {
       return;
     }
+    if (!/#[a-zA-Z]/.test(textarea)) {
+      setTextareaValidation('invalid');
+
+      setTimeoutValidation();
+      return;
+    } else {
+      setTimeoutValidation();
+      setTextareaValidation('valid');
+    }
 
     addFeedbackItemToList(textarea);
     setTextarea('');
   };
 
+  const setTimeoutValidation = () => {
+    setTimeout(() => {
+      setTextareaValidation('default');
+    }, 2000);
+  };
+
   return (
-    <form onSubmit={handleSubmit} className='form'>
+    <form
+      onSubmit={handleSubmit}
+      className={`form ${textareaValidation === 'valid' ? 'form--valid' : ''} ${
+        textareaValidation === 'invalid' ? 'form--invalid' : ''
+      }`}
+    >
       <textarea
         id='feedback-textarea'
         value={textarea}
