@@ -1,16 +1,15 @@
 import { useState } from 'react';
 import { MAX_CHARS_LENGTH } from '../../lib/constants';
-import { useFeedbackItemsContext } from '../../hooks/useFeedbackItemsContext';
+import { useFeedbackItemsStore } from '../../stores/feedbackItemsStore';
 
 type ValidatedTextarea = 'valid' | 'invalid' | 'default';
 
 const FeedbackForm = () => {
-  const { addFeedbackItemToList } = useFeedbackItemsContext('FeedbackForm');
-
   const [textarea, setTextarea] = useState<string>('');
-  const charCount = MAX_CHARS_LENGTH - textarea.length;
   const [textareaValidation, setTextareaValidation] =
     useState<ValidatedTextarea>('default');
+  const addItemToList = useFeedbackItemsStore((state) => state.addItemToList);
+  const charCount = MAX_CHARS_LENGTH - textarea.length;
 
   const handleTextareaChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>,
@@ -38,7 +37,7 @@ const FeedbackForm = () => {
       setTextareaValidation('valid');
     }
 
-    addFeedbackItemToList(textarea);
+    addItemToList(textarea);
     setTextarea('');
   };
 

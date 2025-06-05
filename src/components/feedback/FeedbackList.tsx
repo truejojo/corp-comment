@@ -1,11 +1,29 @@
+import { useMemo } from 'react';
 import FeedbackItem from './FeedbackItem';
 import Spinner from '../Spinner';
 import ErrorMessage from '../ErrorMessage';
-import { useFeedbackItemsContext } from '../../hooks/useFeedbackItemsContext';
+import { useFeedbackItemsStore } from '../../stores/feedbackItemsStore';
 
 const FeedbackList = () => {
-  const { isLoading, error, filteredFeedbackItems } =
-    useFeedbackItemsContext('FeedbackList');
+  const isLoading = useFeedbackItemsStore((state) => state.isLoading);
+  const error = useFeedbackItemsStore((state) => state.error);
+  const feedbackItems = useFeedbackItemsStore((state) => state.feedbackItems);
+  const selectedCompany = useFeedbackItemsStore(
+    (state) => state.selectedCompany,
+  );
+  // const filteredFeedbackItems = useFeedbackItemsStore((state) =>
+  //   state.getFilteredFeedbackItems(),
+  // );
+
+  const filteredFeedbackItems = useMemo(() => {
+    if (!selectedCompany) {
+      return feedbackItems;
+    }
+
+    return feedbackItems.filter((item) => {
+      return item.company.toUpperCase() === selectedCompany.toUpperCase();
+    });
+  }, [feedbackItems, selectedCompany]);
 
   return (
     <ol className='feedback-list'>
