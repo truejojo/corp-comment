@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { MAX_CHARS_LENGTH } from '../../lib/constants';
-
-type FeedbackFormProps = {
-  addFeedbackItemToList: (text: string) => void;
-};
+import { useFeedbackItemsContext } from '../../hooks/useFeedbackItemsContext';
 
 type ValidatedTextarea = 'valid' | 'invalid' | 'default';
 
-const FeedbackForm = ({ addFeedbackItemToList }: FeedbackFormProps) => {
+const FeedbackForm = () => {
+  const { addFeedbackItemToList } = useFeedbackItemsContext('FeedbackForm');
+
   const [textarea, setTextarea] = useState<string>('');
   const charCount = MAX_CHARS_LENGTH - textarea.length;
   const [textareaValidation, setTextareaValidation] =
