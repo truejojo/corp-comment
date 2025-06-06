@@ -1,29 +1,34 @@
-import { useMemo } from 'react';
 import FeedbackItem from './FeedbackItem';
 import Spinner from '../Spinner';
 import ErrorMessage from '../ErrorMessage';
 import { useFeedbackItemsStore } from '../../stores/feedbackItemsStore';
+// import { shallow } from 'zustand/shallow';
+// import type { FeedbackItemProps } from '../../types';
+
+// type StateSelector = {
+//   isLoading: boolean;
+//   error: string;
+//   getFilteredFeedbackItems: () => FeedbackItemProps[];
+// };
 
 const FeedbackList = () => {
-  const isLoading = useFeedbackItemsStore((state) => state.isLoading);
-  const error = useFeedbackItemsStore((state) => state.error);
-  const feedbackItems = useFeedbackItemsStore((state) => state.feedbackItems);
-  const selectedCompany = useFeedbackItemsStore(
-    (state) => state.selectedCompany,
-  );
-  // const filteredFeedbackItems = useFeedbackItemsStore((state) =>
-  //   state.getFilteredFeedbackItems(),
+  // // 1. Zustände mit shallow in einem Objekt selektieren
+  // const { isLoading, error, getFilteredFeedbackItems } = useFeedbackItemsStore(
+  //   (state): StateSelector => ({
+  //     isLoading: state.isLoading,
+  //     error: state.error,
+  //     getFilteredFeedbackItems: state.getFilteredFeedbackItems,
+  //   }),
+  //   shallow, // shallow als zweites Argument
   // );
 
-  const filteredFeedbackItems = useMemo(() => {
-    if (!selectedCompany) {
-      return feedbackItems;
-    }
-
-    return feedbackItems.filter((item) => {
-      return item.company.toUpperCase() === selectedCompany.toUpperCase();
-    });
-  }, [feedbackItems, selectedCompany]);
+  // // 2. Funktion aufrufen um gefilterte Items zu erhalten
+  // const filteredFeedbackItems = getFilteredFeedbackItems();
+  const isLoading = useFeedbackItemsStore((state) => state.isLoading);
+  const error = useFeedbackItemsStore((state) => state.error);
+  const filteredFeedbackItems = useFeedbackItemsStore((state) =>
+    state.getFilteredFeedbackItems(),
+  );
 
   return (
     <ol className='feedback-list'>

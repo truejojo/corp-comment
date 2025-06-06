@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { createSelector } from 'reselect';
 import type { FeedbackItemProps } from '../types';
 
 type FeedbackItemsStore = {
@@ -6,13 +7,40 @@ type FeedbackItemsStore = {
   error: string;
   feedbackItems: FeedbackItemProps[];
   selectedCompany: string;
-  // getFilteredFeedbackItems: () => FeedbackItemProps[];
+  getFilteredFeedbackItems: () => FeedbackItemProps[];
   addItemToList: (text: string) => Promise<void>;
   setSelectCompany: (company: string) => void;
   fetchFeedbackItems: () => Promise<void>;
 };
 
-export const useFeedbackItemsStore = create<FeedbackItemsStore>((set) => ({
+// Eingabe-Selektoren
+const selectFeedbackItems = (state: FeedbackItemsStore) => state.feedbackItems;
+const selectSelectedCompany = (state: FeedbackItemsStore) =>
+  state.selectedCompany;
+
+// Memoisierte Ausgabe-Selektoren
+const selectFilteredFeedbackItems = createSelector(
+  [selectFeedbackItems, selectSelectedCompany],
+
+  (feedbackItems, selectedCompany) => {
+    if (!selectedCompany) {
+      return feedbackItems;
+    }
+
+    const companyName = selectedCompany.toUpperCase();
+    return feedbackItems.filter(
+      (item) => item.company.toUpperCase() === companyName,
+    );
+  },
+);
+
+const selectCompanyList = createSelector(
+  [selectFeedbackItems],
+  (feedbackItems) => [...new Set(feedbackItems.map((item) => item.company))],
+);
+
+// Store
+export const useFeedbackItemsStore = create<FeedbackItemsStore>((set, get) => ({
   // Variablen?
   isLoading: false,
   error: '',
@@ -20,18 +48,8 @@ export const useFeedbackItemsStore = create<FeedbackItemsStore>((set) => ({
   selectedCompany: '',
 
   // ???
-
-  // getFilteredFeedbackItems: () => {
-  //   const state = get();
-
-  //   if (!state.selectedCompany) {
-  //     return state.feedbackItems;
-  //   }
-
-  //   return state.feedbackItems.filter((item) => {
-  //     return item.company.toUpperCase() === state.selectedCompany.toUpperCase();
-  //   });
-  // },
+  getFilteredFeedbackItems: () => selectFilteredFeedbackItems(get()),
+  getCompanyList: () => selectCompanyList(get()),
 
   //actions
   addItemToList: async (text) => {
